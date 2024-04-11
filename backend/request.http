@@ -1,0 +1,33 @@
+POST http://localhost:5000/users
+Content-Type: application/json
+
+{
+    "username" : "itsmerizall1",
+    "password" : "admin",
+    "role" : "admin",
+    "status" : "aktif"
+}
+
+###
+GET http://localhost:5000/users/2
+
+###
+GET  http://localhost:5000/users
+
+###
+PATCH  http://localhost:5000/users/1
+Content-Type: application/json
+
+{
+    "status" : "tidak aktif"
+}
+
+###
+POST http://localhost:5000/activity
+Content-Type: application/json
+
+{
+  "egg_inside" : "fertil",
+  "egg_size" : 30,
+  "user_id" : 1
+}
