@@ -12,7 +12,7 @@ export default function Navbar({users}) {
                 </Link>
             </div>
             <div className="flex gap-5">
-                <NavLink children={'Anlisisis'} href={''}/>
+                <NavLink children={'Anlisisis'} href={'/analytic'}/>
                 <NavLink children={'Riwayat'} href={''}/>
             </div>
             <div className="flex items-center font-medium gap-4">

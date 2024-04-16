@@ -13,7 +13,7 @@ export default function Home() {
             <div className="basis-1/2">
                 <h1 className="text-8xl font-extrabold">Analisis</h1>
                 <p className="text-2xl mt-4">Ambil gambar keluar hasil analisisnya</p>
-                <Link className="flex items-center gap-2 px-4 py-2 border-2 w-max rounded-2xl border-[#3E0000] bg-[#3E0000] text-white mt-9" to={'/'}>
+                <Link className="flex items-center gap-2 px-4 py-2 border-2 w-max rounded-2xl border-[#3E0000] bg-[#3E0000] text-white mt-9" to={'/analytic'}>
                     <img className="w-10" src={Camera} alt="" />
                     <h3 className="font-bold text-base">Ambil Gambar</h3>
                 </Link>
