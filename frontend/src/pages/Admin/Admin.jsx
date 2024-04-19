@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import DeleteAccount from './DeleteAccount'
 import UpdateAccount from './UpdateAccount'
 import axios from 'axios'
+import SideBar from '../../components/SideBar'
 
 const Admin = () => {
     const [data, setData] = useState([]);
@@ -81,8 +82,8 @@ const Admin = () => {
                 </div>
             </div>
         </div>
-        <div className="side w-1/4 bg-black">
-            <p>shshs</p>
+        <div className="side w-1/4">
+            <SideBar />
         </div>
     </div>
   )
