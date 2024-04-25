@@ -44,9 +44,9 @@ const Admin = () => {
 
             </div>
 
-            <div className="flex flex-col mt-5 bg-[#610000] text-white p-0 m-0">
+            <div className="flex flex-col mt-5 bg-[#610000] rounded-lg text-white p-0 m-0">
                 <div>
-                <button className='btn m-5 px-6 py-3 border-2 border-white rounded-tr-2xl rounded-tl-2xl text-white font-normal'>Tambah Akun</button>
+                <a href="/dashboard/Add" className='btn m-5 px-6 py-3 border-2 border-white rounded-tr-2xl rounded-tl-2xl text-white font-normal'>Tambah Akun</a>
                 </div>
                 <div className="flex flex-col">
                 <div className="overflow-x-auto sm:-mx-6 lg:-mx-8 ">

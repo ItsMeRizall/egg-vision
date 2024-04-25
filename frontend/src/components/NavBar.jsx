@@ -20,7 +20,7 @@ export default function Navbar({users}) {
                     <p>{users}</p>
                     <img className="w-10" src={Person} alt="icon" />
                 </div>
-                <button className="px-9 py-2 border-[#3E0000] border-2 rounded-xl hover:text-white hover:bg-[#3E0000]">Logout</button>
+                <a href="/" className="px-9 py-2 border-[#3E0000] border-2 rounded-xl hover:text-white hover:bg-[#3E0000]">Logout</a>
             </div>
         </div>
     )
