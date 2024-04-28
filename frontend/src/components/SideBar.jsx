@@ -12,7 +12,7 @@ const SideBar = () => {
         <div>
           <h3 className="font-bold text-lg m-8">Admin Panel</h3>
         </div>
-        <div className="flex p-6 hover:bg-white justify-end hover:cursor-pointer">
+        <div className="flex p-6 hover:bg-[#3e0000b6] justify-end hover:cursor-pointer">
           <NavLink
             href={"/analytic"}
             children={"Dashboard"}
@@ -20,7 +20,7 @@ const SideBar = () => {
             reverse={true}
           />
         </div>
-        <div className="flex p-5 hover:bg-white justify-end hover:cursor-pointer">
+        <div className="flex p-5 hover:bg-[#3e0000b6] justify-end hover:cursor-pointer">
           <NavLink
             href={"/analytic"}
             children={"Users"}
@@ -28,7 +28,7 @@ const SideBar = () => {
             reverse={true}
           />
         </div>
-        <div className="flex p-5 hover:bg-white justify-end hover:cursor-pointer">
+        <div className="flex p-5 hover:bg-[#3e0000b6] justify-end hover:cursor-pointer">
           <NavLink
             href={"/analytic"}
             children={"Riwayat"}

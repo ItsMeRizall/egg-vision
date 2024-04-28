@@ -18,7 +18,7 @@ export const getUserId = async (req, res)=>{
 
 export const getUser = async (req, res) => {
     try {
-        const response = await prisma.users.findMany({
+        const response = await prisma.users.findMany({ 
             select: {
                 id_user: true,
                 username: true,

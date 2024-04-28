@@ -12,7 +12,7 @@ export default function ResultAnalis(){
             <h1>Hasil Analisis</h1>
             </div>
             <div className="flex justify-around mt-10">
-                <img className="w-[400px] bg-cover object-contain" src={Vector} alt="" />
+                <img className="w-[400px] bg-cover object-contain" src={"http://127.0.0.1:5000/images/image/output/output_image_20240425231441.jpg"} alt="" />
                 <img className="w-[400px] bg-cover object-contain" src={Vector} alt="" />
             </div>
             <div className="flex justify-center mt-10">
