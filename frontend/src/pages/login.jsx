@@ -12,7 +12,7 @@ export default function Login() {
                 <input className="bg-transparent border border-white sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" type="password" placeholder="Password" />
               </div>
               <div className="container flex  justify-center mt-9">
-                <button className="py-2 px-16 bg-[#B20000] rounded-3xl font-medium hover:bg-[#b20000d0]">Sign In</button>
+                <a href="/Home" className="py-2 px-16 bg-[#B20000] rounded-3xl font-medium hover:bg-[#b20000d0]">Sign In</a>
               </div>
             </form>
           </div>
