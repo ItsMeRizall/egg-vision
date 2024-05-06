@@ -2,7 +2,7 @@ POST http://localhost:5000/users
 Content-Type: application/json
 
 {
-    "username" : "itsmerizall1",
+    "username" : "itsmerizall2",
     "password" : "admin",
     "role" : "admin",
     "status" : "aktif"

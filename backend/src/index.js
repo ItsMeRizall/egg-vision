@@ -13,6 +13,6 @@ app.use(users_routes)
 app.use(activity_routes)
 
 
-app.listen(5000, ()=> {
-    console.log("runnn di port {5000}")
+app.listen(3000, ()=> {
+    console.log("runnn di port {3000}")
 })

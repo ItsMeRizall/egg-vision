@@ -52,20 +52,44 @@ export const addUser = async (req, res)=>{
 }
 
 export const editUser = async (req, res) => {
-    const {password, status} = req.body;
+    const { username, status, role, password } = req.body;
     try {
-        const response = await prisma.users.update({
-            where:{
-                id_user: parseInt(req.params.id)
-        },
-        data:{
-            password: password,
-            status: status
+        let updateData = {
+            username: username,
+            status: status,
+            role: role
+        };
+
+        if (password) {
+            const salt = await bcrypt.genSalt();
+            const hashPassword = await bcrypt.hash(password, salt);
+            updateData.password = hashPassword;
         }
+
+        const response = await prisma.users.update({
+            where: {
+                id_user: parseInt(req.params.id)
+            },
+            data: updateData
         });
+
         res.status(200).json(response);
     } catch (error) {
-        res.status(500).json({msg: error.message});
+        res.status(500).json({ msg: error.message });
+    }
+}
+
+
+export const deleteUsers = async (req, res) => {
+    try {
+        const response = await prisma.users.delete({
+            where: {
+                id_user : Number(req.params.id)
+            }
+        })
+        res.status(200).json(response)
+    } catch (error) {
+        res.status(204).json({msg : error.message})
     }
 }
 

@@ -5,6 +5,7 @@ import Vector from "../assets/Vector.png";
 import ButtonCstm from "../components/ButtonCstm";
 import Camera from "../assets/camera.svg";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios'
 
 export default function Analytic() {
   const [isShowVideo, setIsShowVideo] = useState(true);
@@ -12,9 +13,16 @@ export default function Analytic() {
   const videoElement = useRef(null);
   const navigate = useNavigate();
 
+  const [formData, setFormData] = useState({
+    file: null,
+    scale_width: '0.5246683177544043',
+    scale_length : '0.4871952892164479'
+  });
+
   const capture = useCallback(() => {
     const imageSrc = videoElement.current.getScreenshot();
     setCapturedImage(imageSrc);
+    console.log(imageSrc)
     console.log("Gambar Di Ambil");
     setIsShowVideo(false);
   }, [videoElement]);
@@ -25,28 +33,31 @@ export default function Analytic() {
     console.log("Retake Foto");
   }, []);
 
-  const handleNextClick = () => {
-    if (capturedImage) {
-      navigate("/result", { state: { imageData: capturedImage } });
-    } else {
-      alert("Silakan ambil gambar dulu.");
+ const handleNextClick = async () => {
+  if (capturedImage) {
+    const blob = await fetch(capturedImage).then(res => res.blob());
+    const file = new File([blob], 'webcam_capture.jpeg', { type: 'image/jpeg' });
+    try {
+      const postData = new FormData();
+      postData.append('file', file);
+      postData.append('scale_width', 0.5246683177544043);
+      postData.append('scale_length', 0.4871952892164479);
+
+      const response = await axios.post('http://127.0.0.1:5000', postData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
+      console.log('Response:', response.data);
+      // navigate("/result", { state: { imageData: capturedImage } });
+    } catch (error) {
+      console.error('Error:', error);
     }
-  };
-
-  // useEffect(() => {
-  //   const handleFileUpload = () => {
-  //     const reader = new FileReader();
-  //     reader.onloadend = () => {
-  //       const imageData = reader.result;
-  //       setCapturedImage(imageData);
-  //     };
-  //     reader.readAsDataURL(capturedImage);
-  //   };
-
-  //   if (capturedImage) {
-  //     handleFileUpload();
-  //   }
-  // }, [capturedImage]);
+  } else {
+    alert("Silakan ambil gambar dulu.");
+  }
+};
 
   return (
     <>

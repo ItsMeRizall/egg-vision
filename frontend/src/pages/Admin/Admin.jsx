@@ -4,6 +4,10 @@ import DeleteAccount from './DeleteAccount'
 import UpdateAccount from './UpdateAccount'
 import axios from 'axios'
 import SideBar from '../../components/SideBar'
+import api from '../../lib/apiConfig';
+import { dataAcccount } from '../../hooks/admin/DataAccount'
+
+const {putData} = dataAcccount();
 
 const Admin = () => {
     const [data, setData] = useState([]);
@@ -11,8 +15,10 @@ const Admin = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/users');
-                setData(response.data);
+                // const response = await axios.get('http://localhost:3000/users');
+                // setData(response.data);
+                const respone = await api.get('users');
+                setData(respone.data)
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -69,8 +75,8 @@ const Admin = () => {
                                     <td className="whitespace-nowrap px-6 py-4">{value.username}</td>
                                     <td className="whitespace-nowrap px-6 py-4">{value.role}</td>
                                     <td className="whitespace-nowrap px-6 py-4">{value.status}</td>
-                                    <td className="py-4"><UpdateAccount/></td>
-                                    <td className=""><DeleteAccount/></td>
+                                    <td className="py-4"><UpdateAccount id={value.id_user} username={value.username} role={value.role} status={value.status}/></td>
+                                    <td className=""><DeleteAccount id={value.id_user} /></td>
                                     </tr>
                                 })
                             }
