@@ -3,16 +3,19 @@ import cors from "cors";
 import dotenv from "dotenv";
 import users_routes from "../routes/users_routes.js"
 import activity_routes from "../routes/activity_routes.js"
+
+import cookieParser from "cookie-parser"
 dotenv.config();
 
 const app = express();
 
-app.use(cors())
+app.use(cookieParser())
+app.use(cors({credentials: true, origin: 'http://localhost:5173'}))
 app.use(express.json())
 app.use(users_routes)
 app.use(activity_routes)
 
 
-app.listen(3000, ()=> {
-    console.log("runnn di port {3000}")
+app.listen(process.env.APP_PORT, ()=> {
+    console.log(`runnn di port ${process.env.APP_PORT}`)
 })

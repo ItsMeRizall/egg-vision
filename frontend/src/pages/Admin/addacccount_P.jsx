@@ -1,48 +1,75 @@
-import React, { useState } from "react";
-import { dataAcccount } from "../../hooks/admin/DataAccount";
+import React, { useState, useEffect } from "react";
+import axios, { formToJSON } from "axios";
+import PopUp from "../../components/PopUp";
 
-const UpdateAccount = (props) => {
+const AddAccountP = ({props, setNotif, setMessages, setSuccess}) => {
   const [isShow, setShow] = useState(false);
-  const id = props.id;
-  const username = props.username;
-  const role = props.role;
-  const status = props.status;
+  const [data, setData] = useState([]);
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+    role: "",
+    status: "",
+  });
 
-  const {putData} = dataAcccount();
-  const [updatedData, setUpdatedData] = useState({username, role, status})
-
-  const handleUpdate = () => {
-    console.log(updatedData)
-    putData(updatedData,id)
-
-          setShow(false)
-      setTimeout(function() {
-      }, 2000);
-      props.setNotif(true)
-      props.setSuccess(true)
-      props.setMessages("Berhasil Memperbarui Data")
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/getallusers");
+        setData(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }),
+    [];
 
   const handleChange = (event) => {
-    setUpdatedData({
-      ...updatedData,
+    setFormData({
+      ...formData,
       [event.target.name]: event.target.value,
     });
   };
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    console.log(JSON.stringify(formData, null, 2));
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/users",
+        formData
+      );
+      console.log("Data berhasil ditambahkan:", response.data);
+      setFormData({
+        username: "",
+        password: "",
+        role: "",
+        status: "",
+      });
+      
+      setShow(false)
+      setTimeout(function() {
+      }, 2000);
+      setNotif(true)
+      setSuccess(true)
+      setMessages("Berhasil Menambahkan Data")
+    } catch (error) {
+      console.error("Gagal menambahkan data:", error);
+    }
+  };
+
   const buttonClick = () => {
-    console.log("Role : ",role)
-    console.log("Status : ",status)
-    setShow(true)
-  }
+    setShow(true);
+  };
 
   return (
     <>
       <button
         onClick={buttonClick}
-        className="btn w-[100px] py-2 border-2 border-white rounded-br-2xl rounded-bl-2xl text-white font-normal"
+        className="btn mt-3 ml-3 px-6 py-3 border-2 border-white rounded-tr-2xl rounded-tl-2xl text-white font-normal"
       >
-        Edit
+        Tambah Akun
       </button>
       {isShow ? (
         <div className="flex justify-center items-center backdrop-blur-sm overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
@@ -62,7 +89,7 @@ const UpdateAccount = (props) => {
                       type="text"
                       id="username"
                       name="username"
-                      value={updatedData.username}
+                      value={formData.username}
                       onChange={handleChange}
                       className="text-black shadow-md px-3 py-3 rounded-md"
                     />
@@ -74,7 +101,7 @@ const UpdateAccount = (props) => {
                     <input
                       type="password"
                       name="password"
-                      value={updatedData.password}
+                      value={formData.password}
                       onChange={handleChange}
                       placeholder="New Password"
                       className="text-black shadow-md px-3 py-3 rounded-md"
@@ -89,11 +116,13 @@ const UpdateAccount = (props) => {
                     </label>
                     <select
                       id="status"
+                      required
                       name="status"
+                      value={formData.status}
                       onChange={handleChange}
                       className="mb-5 bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     >
-                      <option disabled value={status}>
+                      <option disabled value="">
                         Status
                       </option>
                       <option value="aktif">Aktif</option>
@@ -109,7 +138,9 @@ const UpdateAccount = (props) => {
                     </label>
                     <select
                       id="role"
+                      required
                       name="role"
+                      value={formData.role}
                       onChange={handleChange}
                       className="mb-5 bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     >
@@ -128,14 +159,14 @@ const UpdateAccount = (props) => {
                   type="button"
                   onClick={() => setShow(false)}
                 >
-                  Close
+                  Batal
                 </button>
                 <button
                   className="text-white w-full bg-[#3E0000] active:bg-[#610000da] font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
                   type="button"
-                  onClick={handleUpdate}
+                  onClick={handleSubmit}
                 >
-                  Submit
+                  Tambah Akun
                 </button>
               </div>
             </div>
@@ -146,4 +177,4 @@ const UpdateAccount = (props) => {
   );
 };
 
-export default UpdateAccount;
+export default AddAccountP;

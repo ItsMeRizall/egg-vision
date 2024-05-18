@@ -3,7 +3,7 @@ import api from "../../lib/apiConfig"
 export function dataAcccount(){
         const fetchData = async () => {
             try {
-                const res = await api.get('users');
+                const res = await api.get('getallusers');
                 return res.data
             } catch (error) {
                 console.log("Gagal Mengambil Data")
@@ -32,7 +32,7 @@ export function dataAcccount(){
         
         const deleteData = async (id_Users) => {
             try {
-                const res = await api.delete(`users/${id_Users}`)
+                const res = await api.delete(`getallusers/${id_Users}`)
                 console.log("Delete success", res.data);
     
             }

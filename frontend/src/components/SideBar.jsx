@@ -14,7 +14,7 @@ const SideBar = () => {
         </div>
         <div className="flex p-6 hover:bg-[#3e0000b6] justify-end hover:cursor-pointer">
           <NavLink
-            href={"/analytic"}
+            href={"/dashboard/admin"}
             children={"Dashboard"}
             childimg={Home}
             reverse={true}
@@ -22,7 +22,7 @@ const SideBar = () => {
         </div>
         <div className="flex p-5 hover:bg-[#3e0000b6] justify-end hover:cursor-pointer">
           <NavLink
-            href={"/analytic"}
+            href={"/dashboard/admin"}
             children={"Users"}
             childimg={Person2}
             reverse={true}
@@ -30,7 +30,7 @@ const SideBar = () => {
         </div>
         <div className="flex p-5 hover:bg-[#3e0000b6] justify-end hover:cursor-pointer">
           <NavLink
-            href={"/analytic"}
+            href={"/riwayat"}
             children={"Riwayat"}
             childimg={History}
             reverse={true}

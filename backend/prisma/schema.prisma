@@ -19,6 +19,7 @@ model users{
   password String @db.VarChar(255)
   role role_users
   status String @db.Text()
+  refresh_token String? @db.Text()
   activity activity[]
 }
 
@@ -26,14 +27,16 @@ model activity {
   id_activity Int @id @default(autoincrement())
   date_log DateTime @default(now())
   egg_inside egg_inside
-  egg_size Float
+  egg_width Float
+  egg_length Float
+  grade String @db.VarChar(5)
   user_id Int
   users users @relation(fields: [user_id], references: [id_user])
 }
 
 enum egg_inside{
-  fertil
-  nonfertil
+  fertile
+  nonfertile
 }
 
 enum role_users{

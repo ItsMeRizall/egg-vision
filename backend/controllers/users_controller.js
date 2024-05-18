@@ -100,12 +100,14 @@ export const logout = async (req, res) => {
         where: {refresh_token: refreshToken}
     });
 
-    const userId = user[0].id;
-    await prisma.user.update({
-        where: { id: userId },
+    const userId = user[0].id_user;
+    await prisma.users.update({
+        where: { id_user: userId },
         data: { refresh_token: null }
     });
     res.clearCookie('refresh_token');
     return res.sendStatus(200);
 };
+
+
 

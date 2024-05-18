@@ -6,6 +6,9 @@ import ButtonCstm from "../components/ButtonCstm";
 import Camera from "../assets/camera.svg";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios'
+import {refreshToken} from "../hooks/authentication/refreshToken.js";
+import {useTokenValidation} from "../hooks/authentication/useTokenValidation.js";
+import api from "../lib/apiConfig.js"
 
 export default function Analytic() {
   const [isShowVideo, setIsShowVideo] = useState(true);
@@ -13,10 +16,13 @@ export default function Analytic() {
   const videoElement = useRef(null);
   const navigate = useNavigate();
 
+  const {tokenData, username, exp, userId} = refreshToken()
+  useTokenValidation(tokenData, exp);
+
   const [formData, setFormData] = useState({
     file: null,
-    scale_width: '0.5246683177544043',
-    scale_length : '0.4871952892164479'
+    scale_width: '0.020328139069594194',
+    scale_length : '0.018252819486310804'
   });
 
   const capture = useCallback(() => {
@@ -40,8 +46,8 @@ export default function Analytic() {
     try {
       const postData = new FormData();
       postData.append('file', file);
-      postData.append('scale_width', 0.5246683177544043);
-      postData.append('scale_length', 0.4871952892164479);
+      postData.append('scale_width', 0.020328139069594194);
+      postData.append('scale_length', 0.018252819486310804);
 
       const response = await axios.post('http://127.0.0.1:5000', postData, {
         headers: {
@@ -49,8 +55,17 @@ export default function Analytic() {
         }
       });
 
-      console.log('Response:', response.data);
-      // navigate("/result", { state: { imageData: capturedImage } });
+
+      const activity = await api.post('activity', {
+        "egg_inside" : response.data.egg_info[0].class,
+        "egg_width" : response.data.egg_info[0].predicted_width,
+        "egg_length" : response.data.egg_info[0].predicted_length,
+        "user_id" : userId,
+        "grade" : response.data.egg_info[0].grade
+      } )
+
+
+      navigate("/result", { state: { data: response.data } });
     } catch (error) {
       console.error('Error:', error);
     }
@@ -61,12 +76,12 @@ export default function Analytic() {
 
   return (
     <>
-      <div className="flex flex-col h-screen px-16 py-4 overflow-hidden">
-        <Navbar />
-        <div className="flex items-center min-h-full text-[#3E0000]">
+      <div className="flex flex-col h-screen px-16 py-4 overflow-hidden vm:px-5 md:px-14">
+        <Navbar users={username} />
+        <div className="flex items-center min-h-full text-[#3E0000] vm:flex-col">
           <div className="basis-1/2 flex flex-col m-9 relative h-max bg-slate-200 box-border border-[#3E0000] border-2">
             {isShowVideo ? (
-              <Webcam audio={false} ref={videoElement} screenshotFormat="image/png" />
+              <Webcam className="w-full h-full object-cover" audio={false} ref={videoElement} screenshotFormat="image/png" />
             ) : (
               <img
                 className="w-full h-full object-cover"
@@ -84,7 +99,7 @@ export default function Analytic() {
             </div>
           </div>
           <div className="basis-1/2 flex flex-col">
-            <div className="flex justify-around">
+            <div className="flex justify-around vm:flex-col gap-5">
               <ButtonCstm
                 event={handleNextClick}
                 color={"bg-[#1C8C00] text-white"}
@@ -98,7 +113,7 @@ export default function Analytic() {
                 text={"Ambil Ulang"}
               />
             </div>
-            <img className="w-[580px] mt-5" src={Vector} alt="" />
+            <img className="w-[580px] mt-5 vm:hidden" src={Vector} alt="" />
           </div>
         </div>
       </div>

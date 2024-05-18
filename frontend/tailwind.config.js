@@ -9,6 +9,10 @@ module.exports = {
           700: "#690000", // Warna lebih gelap untuk hover
         },
       },
+      screens: {
+        'vm': { 'max': '600px' },
+        // => @media (min-height: 800px) { ... }
+      }
     },
   },
   plugins: [],
