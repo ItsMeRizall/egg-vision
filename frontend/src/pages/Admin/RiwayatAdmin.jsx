@@ -28,7 +28,6 @@ const RiwayatAdmin = () => {
           No: index + 1,
           Username: row.username,
           Total: activityCount,
-          // Lanjutkan untuk setiap kolom yang ingin Anda tampilkan
         };
       });      
       

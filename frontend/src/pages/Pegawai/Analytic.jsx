@@ -1,29 +1,41 @@
 import React, { useCallback, useState, useRef, useEffect } from "react";
-import Navbar from "../components/NavBar";
+import Navbar from "../../components/NavBar.jsx";
 import Webcam from "react-webcam";
-import Vector from "../assets/Vector.png";
-import ButtonCstm from "../components/ButtonCstm";
-import Camera from "../assets/camera.svg";
+import Vector from "../../assets/Vector.png";
+import ButtonCstm from "../../components/ButtonCstm.jsx";
+import Camera from "../../assets/camera.svg";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios'
-import {refreshToken} from "../hooks/authentication/refreshToken.js";
-import {useTokenValidation} from "../hooks/authentication/useTokenValidation.js";
-import api from "../lib/apiConfig.js"
+import {refreshToken} from "../../hooks/authentication/refreshToken.js";
+import {useTokenValidation} from "../../hooks/authentication/useTokenValidation.js";
+import api from "../../lib/apiConfig.js"
+import { calibration } from "../../hooks/calibration/Calibration.js";
 
 export default function Analytic() {
+  const {tokenData, username, userId,  exp, role} = refreshToken()
+  useTokenValidation(tokenData, username, role, 'pegawai');
   const [isShowVideo, setIsShowVideo] = useState(true);
   const [capturedImage, setCapturedImage] = useState(null);
   const videoElement = useRef(null);
   const navigate = useNavigate();
 
-  const {tokenData, username, exp, userId} = refreshToken()
-  useTokenValidation(tokenData, exp);
+  const {getCalibration} = calibration()
+  const [scaleWidth, setScaleWidth] = useState();
+  const [scaleLength, setScaleLength] = useState();
 
-  const [formData, setFormData] = useState({
-    file: null,
-    scale_width: '0.020328139069594194',
-    scale_length : '0.018252819486310804'
-  });
+  useEffect(() => {
+    const getScale = async () => {
+    try {
+        const res = await getCalibration()
+        setScaleLength(res[0].scale_length)
+        setScaleWidth(res[0].scale_width)
+    } catch (error) {
+      console.log("Get Scale Eror", error)
+    }
+  }
+
+  getScale()
+  },[])
 
   const capture = useCallback(() => {
     const imageSrc = videoElement.current.getScreenshot();
@@ -46,8 +58,8 @@ export default function Analytic() {
     try {
       const postData = new FormData();
       postData.append('file', file);
-      postData.append('scale_width', 0.020328139069594194);
-      postData.append('scale_length', 0.018252819486310804);
+      postData.append('scale_width', scaleWidth);
+      postData.append('scale_length', scaleLength);
 
       const response = await axios.post('http://127.0.0.1:5000', postData, {
         headers: {
@@ -76,7 +88,7 @@ export default function Analytic() {
 
   return (
     <>
-      <div className="flex flex-col h-screen px-16 py-4 overflow-hidden vm:px-5 md:px-14">
+      <div className="flex flex-col h-screen px-16 py-0 overflow-hidden vm:px-5 md:px-14 md:py-0">
         <Navbar users={username} />
         <div className="flex items-center min-h-full text-[#3E0000] vm:flex-col">
           <div className="basis-1/2 flex flex-col m-9 relative h-max bg-slate-200 box-border border-[#3E0000] border-2">

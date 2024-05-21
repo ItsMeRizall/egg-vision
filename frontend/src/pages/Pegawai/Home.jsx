@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
-import Navbar from "../components/NavBar";
+import Navbar from "../../components/NavBar.jsx";
 import { Link, useNavigate } from "react-router-dom";
-import Camera from "../assets/camera.svg"
-import Vector from "../assets/Vector.png"
-import {refreshToken} from "../hooks/authentication/refreshToken.js";
-import {useTokenValidation} from "../hooks/authentication/useTokenValidation.js";
+import Camera from "../../assets/camera.svg";
+import Vector from "../../assets/Vector.png"
+import {refreshToken} from "../../hooks/authentication/refreshToken.js";
+import {useTokenValidation} from "../../hooks/authentication/useTokenValidation.js";
 
 
 export default function Home() {
@@ -13,7 +13,7 @@ export default function Home() {
     const navigate = useNavigate();
     return (
         <>
-        <div className="flex flex-col h-screen px-16 py-4 overflow-hidden vm:px-5 md:px-14">
+        <div className="flex flex-col h-screen px-16 py-4 overflow-hidden vm:px-5 md:px-14 vm:p-0">
         <Navbar users={username}/>
         <div className="flex items-center min-h-full text-[#3E0000] border-3 vm:px-5">
             <div className="basis-1/2">

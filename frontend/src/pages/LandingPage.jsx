@@ -5,7 +5,7 @@ const LandingPage = () => {
     const navigate = useNavigate();
 
     function toSignIn(){
-        navigate('/home'); 
+        navigate('/login'); 
     }
 
     return (

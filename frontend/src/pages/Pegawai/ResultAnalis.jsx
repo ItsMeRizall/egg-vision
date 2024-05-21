@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
-import Navbar from "../components/NavBar";
-import Vector from "../assets/Vector.png";
+import Navbar from "../../components/NavBar.jsx";
+import Vector from "../../assets/Vector.png";
 import { useLocation, useNavigate } from "react-router-dom";
-import { refreshToken } from "../hooks/authentication/refreshToken.js";
-import { useTokenValidation } from "../hooks/authentication/useTokenValidation.js";
+import { refreshToken } from "../../hooks/authentication/refreshToken.js";
+import { useTokenValidation } from "../../hooks/authentication/useTokenValidation.js";
 
 export default function ResultAnalis() {
     const { tokenData, username, exp , role} = refreshToken();
@@ -29,12 +29,12 @@ export default function ResultAnalis() {
 
     return (
         <>
-            <div className="flex flex-col h-screen px-16 py-4 overflow-hidden">
+            <div className="flex flex-col h-screen px-16 overflow-hidden">
                 <Navbar users={username} />
-                <div className="flex justify-center font-bold text-5xl mt-12">
+                <div className="flex justify-center font-bold text-5xl mt-12 vm:items-center vm:mt-5 md:px-14">
                     <h1>Hasil Analisis</h1>
                 </div>
-                <div className="flex justify-around mt-10">
+                <div className="flex justify-around mt-10 vm:flex-col vm:gap-5">
                     <img className="w-[400px] bg-cover object-contain" src={`http://localhost:5000/${data.original_image}`} alt="" />
                     <img className="w-[400px] bg-cover object-contain" src={`http://localhost:5000/${data.output_image}`} alt="" />
                 </div>

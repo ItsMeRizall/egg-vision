@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../components/NavBar";
-import TableData from "../components/TableData";
-import {refreshToken} from "../hooks/authentication/refreshToken.js";
-import {useTokenValidation} from "../hooks/authentication/useTokenValidation.js";
-import api from "../lib/apiConfig.js"
-import Pagination from "../components/pagination.jsx";
+import Navbar from "../../components/NavBar.jsx";
+import TableData from "../../components/TableData.jsx";
+import {refreshToken} from "../../hooks/authentication/refreshToken.js";
+import {useTokenValidation} from "../../hooks/authentication/useTokenValidation.js";
+import api from "../../lib/apiConfig.js"
+import Pagination from "../../components/pagination.jsx";
 
 const RiwayatPegawai = () => {
   const { tokenData, username, exp, userId } = refreshToken();
@@ -46,7 +46,7 @@ const RiwayatPegawai = () => {
 
   return (
     <>
-      <div className="flex flex-col h-screen px-16 py-4 overflow-hidden vm:px-5 md:px-14">
+      <div className="flex flex-col h-screen px-16 overflow-hidden vm:px-5 md:px-14">
         <Navbar users={username} />
         <div className="flex mt-20 items-center flex-col vm:mt-5">
           <TableData columns={columns} data={currentPosts} title="Riwayat Aktivitas" />

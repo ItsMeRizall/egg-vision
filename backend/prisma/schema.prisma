@@ -21,6 +21,7 @@ model users{
   status String @db.Text()
   refresh_token String? @db.Text()
   activity activity[]
+  calibration calibration?
 }
 
 model activity {
@@ -32,6 +33,16 @@ model activity {
   grade String @db.VarChar(5)
   user_id Int
   users users @relation(fields: [user_id], references: [id_user])
+}
+
+model calibration {
+  id_calibration Int @id @default(autoincrement())
+  length Float
+  width Float
+  scale_width Float
+  scale_length Float
+  id_user Int @unique
+  users users @relation(fields: [id_user], references: [id_user])
 }
 
 enum egg_inside{

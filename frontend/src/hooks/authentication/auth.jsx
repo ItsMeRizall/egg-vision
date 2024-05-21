@@ -8,15 +8,21 @@ export function auth() {
     const [accessToken, setAccessToken] = useState('');
     const [authError, setAuthError] = useState(false)
 
-    const loginUser = async (login) => {
+    const loginUser = async (login, callback) => {
         try {
             const response = await api.post('login', login);
+            console.log(response)
             const accessToken = response.data.accessToken
             console.log('Login Berhasil', response.data)
-            response.data.role == 'admin' ? navigate('../dashboard/admin'):navigate('/home') 
+            response.data.role == 'admin' ? navigate('../dashboard/'):navigate('/home') 
         } catch (error) {
-            console.error('Login Error:', error);
-            setAuthError(true)
+            if (error.response.status === 404) {
+                callback(error.response.data.msg);
+            } else if (error.response.status === 400) {
+                callback(error.response.data.msg);
+            } else {
+                callback(error.response.data.msg);
+            }
         }
     };
 

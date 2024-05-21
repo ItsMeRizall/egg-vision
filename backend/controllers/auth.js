@@ -14,14 +14,14 @@ export const Login = async (req, res) => {
         });
 
         if (response.length === 0) {
-            return res.status(404).json({ msg: "Username not found" });
+            return res.status(404).json({ msg: "Username Salah" });
         }
 
         const user = response[0];
         const match = await bcrypt.compare(req.body.password, user.password);
 
         if (!match) {
-            return res.status(400).json({ msg: "Wrong Password" });
+            return res.status(404).json({ msg: "Password Salah" });
         }
 
         const userId = user.id_user;
@@ -50,6 +50,6 @@ export const Login = async (req, res) => {
 
         res.json({ accessToken,  role});
     } catch (e) {
-        res.status(204).json({"message" : e.message});
+        res.status(500).json({"message" : e.message});
     }
 };

@@ -1,16 +1,18 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ListAkun from "./components/ListAkun";
 import Login from "./pages/login";
-import Home from "./pages/Home";
-import Analytic from "./pages/Analytic";
+import Home from "./pages/Pegawai/Home";
+import Analytic from "./pages/Pegawai/Analytic";
 import Admin from "./pages/Admin/Admin";
 import Add from "./pages/Admin/AddAccount";
 // import Edit from "./pages/Admin/EditAccount";
-import ResultAnalis from "./pages/ResultAnalis";
+import ResultAnalis from "./pages/Pegawai/ResultAnalis";
 import LandingPage from "./pages/LandingPage";
-import RiwayatPegawai from "./pages/RiwayatPegawai";
+import RiwayatPegawai from "./pages/Pegawai/RiwayatPegawai";
 import RiwayatAdmin from "./pages/Admin/RiwayatAdmin";
 import RiiwayatDetail from "./pages/Riwayat/RiiwayatDetail";
+import Dashboard from "./pages/Admin/Dashboard";
+import Kalibrasi from "./pages/Pegawai/Kalibrasi";
 
 export default function App() {
   return (
@@ -27,6 +29,8 @@ export default function App() {
           {/* <Route path="/dashboard/edit" element={<Edit />} /> */}
           <Route path="/analytic/" element={<Analytic />} />
           <Route path="/Listakun" element={<ListAkun />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/kalibrasi" element={<Kalibrasi />} />
           <Route path="/user-riwayat/detail/:username" element={<RiiwayatDetail />} />
         </Routes>
     </div>

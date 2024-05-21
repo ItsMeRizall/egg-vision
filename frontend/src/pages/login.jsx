@@ -4,6 +4,7 @@ import { auth } from "../hooks/authentication/auth";
 export default function Login() {
   const [dataForm, setFormData] = useState({username: "", password:""})
   const {accessToken, loginUser, authError} = auth();
+  const [erorMessage, setErrorMessage] = useState();
 
 
 
@@ -17,7 +18,7 @@ export default function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(JSON.stringify(dataForm, null, 2));
-    loginUser(dataForm)
+    loginUser(dataForm, setErrorMessage)
   }
 
   return (
@@ -56,6 +57,8 @@ export default function Login() {
               </button>
             </div>
           </form>
+          {erorMessage &&
+          <h3 className="mt-5">{erorMessage}</h3>}
         </div>
       </div>
     </>
