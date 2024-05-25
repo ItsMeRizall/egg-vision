@@ -49,14 +49,14 @@ const Dashboard = () => {
 
 
   return (
-    <div className="flex h-screen relative">
-      <div className="main w-full p-12 flex-col">
+    <div className="flex relative">
+      <div className="main w-full p-12 flex-col vm:p-5">
         <div className="flex items-center justify-between">
           <Link to={"/"}>
             <h3 className="font-bold text-2xl">EGG VISION</h3>
           </Link>
 
-          <form className="">
+          <form className="vm:hidden">
             <label
               htmlFor="default-search"
               className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
@@ -104,17 +104,17 @@ const Dashboard = () => {
             </div>
           ))}
         </div>
-        <div className="flex items-center gap-4 mt-10">
-          <div className="w-3/5 h-[400px] flex justify-center items-center bg-[#1F1F25] rounded-2xl box-border p-20">
+        <div className="flex items-center gap-4 mt-10 vm:flex-col">
+          <div className="w-3/5 h-[400px] flex justify-center items-center bg-[#1F1F25] rounded-2xl box-border p-20 vm:w-full vm:p-5">
             <BarChart activity={dataActivityInWeek}/>
           </div>
-          <div className="w-2/5 h-[400px] flex justify-center bg-[#1F1F25] rounded-2xl box-border p-10">
+          <div className="w-2/5 h-[400px] flex justify-center bg-[#1F1F25] rounded-2xl box-border p-10 vm:w-full">
             <DoughnutChart totalFertile={data.totalFertile} totalNonFertile={data.totalNonFertile}/>
           </div>
         </div>
       </div>
 
-      <div className="side basis-1/4">
+      <div className="side basis-1/4 vm:absolute right-5">
         <SideBar />
       </div>
     </div>

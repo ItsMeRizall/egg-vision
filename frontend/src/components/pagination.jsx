@@ -14,10 +14,10 @@ const Pagination = ({
 
     return (
         <div className='mt-5'>
-            <ul class="flex items-center -space-x-px h-8 text-sm gap-2">
+            <ul className="flex items-center -space-x-px h-8 text-sm gap-2">
             {pages.map((page, index) => {
                 return (
-                    <li>
+                    <li key={index}>
                     <button
                         key={index}
                         onClick={() => setCurrentPage(page)}

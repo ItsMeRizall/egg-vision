@@ -24,9 +24,9 @@ export function dataAcccount(){
         const putData = async (dataUsers, id_Users) => {
             try {
                 const res = await api.patch(`users/${id_Users}`, dataUsers)
-                console.log("Put Success ", res.data)
+                return true
             } catch (err) {
-                console.error('Put error', err)
+                return false
             }
         }
         

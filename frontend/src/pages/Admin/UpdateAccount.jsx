@@ -15,7 +15,7 @@ const UpdateAccount = (props) => {
     console.log(updatedData)
     putData(updatedData,id)
 
-          setShow(false)
+      setShow(false)
       setTimeout(function() {
       }, 2000);
       props.setNotif(true)
@@ -46,7 +46,7 @@ const UpdateAccount = (props) => {
       </button>
       {isShow ? (
         <div className="flex justify-center items-center backdrop-blur-sm overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-          <div className="relative w-1/2 my-12 mx-auto">
+          <div className="relative w-1/2 my-12 mx-auto vm:w-full">
             <div className="border-white border-2 w-50% bg-[#610000] rounded-lg shadow-lg relative flex flex-col w-full bg-primary outline-none focus:outline-none">
               <div className="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t ">
                 <h3 className="text-xl font-bold text-white">Update Data</h3>

@@ -12,19 +12,6 @@ const AddAccountP = ({props, setNotif, setMessages, setSuccess}) => {
     status: "",
   });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("http://localhost:3000/getallusers");
-        setData(response.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchData();
-  }),
-    [];
-
   const handleChange = (event) => {
     setFormData({
       ...formData,
@@ -73,10 +60,10 @@ const AddAccountP = ({props, setNotif, setMessages, setSuccess}) => {
       </button>
       {isShow ? (
         <div className="flex justify-center items-center backdrop-blur-sm overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-          <div className="relative w-1/2 my-12 mx-auto">
+          <div className="relative w-1/2 my-12 mx-auto vm:w-full">
             <div className="border-white border-2 w-50% bg-[#610000] rounded-lg shadow-lg relative flex flex-col w-full bg-primary outline-none focus:outline-none">
               <div className="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t ">
-                <h3 className="text-xl font-bold text-white">Update Data</h3>
+                <h3 className="text-xl font-bold text-white">Tambah Data</h3>
               </div>
               <div className="relative flex-auto gap-4">
                 <form className="px-8 pt-6 pb-8 w-full" action="">

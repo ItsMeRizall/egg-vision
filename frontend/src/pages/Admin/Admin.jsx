@@ -41,55 +41,54 @@ const Admin = () => {
       }
     };
     fetchData();
-  }),
-    [];
+  }, []);
 
   return (
-    <div className="flex h-screen relative">
-      <div className="main w-full p-12">
-        <div className="flex items-center justify-between">
-          <Link to={"/"}>
-            <h3 className="font-bold text-2xl">EGG VISION</h3>
-          </Link>
+    <>
+<div className="flex relative h-screen">
+<div className="main w-full p-12 flex-col vm:p-5">
+  <div className="flex items-center justify-between">
+    <Link to={"/"}>
+      <h3 className="font-bold text-2xl">EGG VISION</h3>
+    </Link>
 
-          <form className="">
-            <label
-              htmlFor="default-search"
-              className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
-            >
-              Search
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                <svg
-                  className="w-4 h-4 text-[#DCDCDC] "
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                  />
-                </svg>
-              </div>
-              <input
-                type="search"
-                id="default-search"
-                className="bg-[#A3A3A3] text-[#DCDCDC] block w-full p-4 ps-10 text-sm border border-gray-300 rounded-lg focus:ring-blue-500 "
-                placeholder="Search"
-                required
-              />
-              {/* <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button> */}
-            </div>
-          </form>
+    <form className="vm:hidden">
+      <label
+        htmlFor="default-search"
+        className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+      >
+        Search
+      </label>
+      <div className="relative">
+        <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+          <svg
+            className="w-4 h-4 text-[#DCDCDC] "
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 20 20"
+          >
+            <path
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+            />
+          </svg>
         </div>
-
-        <div className="flex flex-col mt-5 bg-[#610000] rounded-lg text-white p-0 m-0">
+        <input
+          type="search"
+          id="default-search"
+          className="bg-[#A3A3A3] text-[#DCDCDC] block w-full p-4 ps-10 text-sm border border-gray-300 rounded-lg focus:ring-blue-500 "
+          placeholder="Search"
+          required
+        />
+        {/* <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button> */}
+      </div>
+    </form>
+  </div>
+  <div className="flex flex-col mt-5 bg-[#610000] rounded-lg text-white p-0 m-0">
           <div className="flex">
             <AddAccountP setNotif={setNotif} setMessages={setNotifMessages} setSuccess={setSuccess}/>
           </div>
@@ -169,14 +168,17 @@ const Admin = () => {
         />
         </div>
       </div>
-      <div className="side w-1/4">
-        <SideBar />
-      </div>
-      {
+
+<div className="side basis-1/4 vm:absolute vm:right-5 top-2">
+  <SideBar />
+</div>
+</div>
+
+{
         notif &&
         <PopUp icon={succes? centang : gagal} text={succes? "Berhasil" : " Tidak Berhasil"} Message={notifMessages} Confirmation={false} close={() => setNotif(false)}/>
       }
-    </div>
+</>
   );
 };
 

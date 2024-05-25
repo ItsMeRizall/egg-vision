@@ -8,6 +8,9 @@ import ButtonCstm from "../../components/ButtonCstm";
 import Camera from "../../assets/camera.svg";
 import { calibration } from "../../hooks/calibration/Calibration";
 import axios from "axios";
+import PopUp from "../../components/PopUp";
+import gagal from "../../assets/gagal.svg";
+import centang from "../../assets/centang.svg";
 
 const Kalibrasi = () => {
   const { tokenData, username, exp, role, userId } = refreshToken();
@@ -20,12 +23,20 @@ const Kalibrasi = () => {
   const [isShowVideo, setIsShowVideo] = useState(true);
   const [capturedImage, setCapturedImage] = useState(null);
   const videoElement = useRef(null);
+  
+  const [notif, setNotif] = useState(true);
+  const [notifMessages, setnotifMessages] = useState("hha")
+  const [succes, setSuccess] = useState(true)
+
+  
 
   const handleChange = (event) => {
     setUpdatedData({
       ...updatedData,
       [event.target.name]: event.target.value,
     });
+
+    console.log(updatedData)
   };
 
   const capture = useCallback(() => {
@@ -45,6 +56,12 @@ const Kalibrasi = () => {
 
   const handleNextClick = async () => {
     if (capturedImage) {
+      if (!updatedData.length || !updatedData.width) {
+        setNotif(true);
+        setSuccess(false);
+        setnotifMessages("Form harus diisi secara lengkap.");
+        return; 
+      }
       try {
         const blob = await fetch(capturedImage).then(res => res.blob());
         const file = new File([blob], 'webcam_capture.jpeg', { type: 'image/jpeg' });
@@ -62,7 +79,8 @@ const Kalibrasi = () => {
 
         console.log(response);
 
-        const check = await getCalibration(userId);
+        if (response.length > 0){
+          const check = await getCalibration(userId);
         console.log(check)
 
         if (check.length > 0 ){
@@ -72,6 +90,7 @@ const Kalibrasi = () => {
             "scale_length": response.data.calibration_info.scale_length,
             "scale_width": response.data.calibration_info.scale_width,
           })
+
         }else{
           const addCalibration = await setCalibration({
             "length": response.data.calibration_info.real_length,
@@ -80,14 +99,24 @@ const Kalibrasi = () => {
             "scale_width": response.data.calibration_info.scale_width,
             "user_id": userId
           });
+          
         }
-
-        // navigate("/result", { state: { data: response.data } });
+        setNotif(true)
+        setnotifMessages("Data Kalibrasi Berhasil Di Simpan")
+        } else {
+          setNotif(true)
+          setSuccess(false)
+          setnotifMessages("Gambar Telur Tidak Di Temukan")
+        }
+        
+        
       } catch (error) {
         console.error('Error:', error);
       }
     } else {
-      alert("Silakan ambil gambar dulu.");
+      setNotif(true)
+      setSuccess(false)
+      setnotifMessages("Silakan ambil gambar dulu.")
     }
   }
 
@@ -122,7 +151,8 @@ const Kalibrasi = () => {
   }, [userId]);
 
   return (
-    <div className="flex flex-col h-screen px-16 py-4 overflow-hidden vm:px-5 md:px-14 vm:p-0">
+<>
+<div className="flex flex-col h-screen px-16 py-4 overflow-hidden vm:px-5 md:px-14 vm:p-0">
       <Navbar users={username} />
       <div className="flex items-center min-h-full text-[#3E0000] vm:px-5 border-3 vm:flex-col-reverse vm:justify-end">
         <div className="basis-1/2">
@@ -192,12 +222,17 @@ const Kalibrasi = () => {
             <ButtonCstm img={Camera} event={capture} color={"bg-[#3E0000]"} radius={"rounded-full"} />
           </div>
         </div>
-        <div className="mt-3 flex flex-col items-start">
+        <div className="mt-3 flex flex-col items-start md:hidden">
         <h1 className="text-8xl font-extrabold vm:text-5xl">Kalibrasi</h1>
         <p className="text-xl">Kalibrasi akun anda agar lebih optimal</p>
         </div>
       </div>
     </div>
+    {
+        notif &&
+        <PopUp icon={succes? centang : gagal} text={succes? "Berhasil" : "Ups"} Message={notifMessages} Confirmation={false} close={() => setNotif(false)}/>
+      }
+</>
   );
 };
 

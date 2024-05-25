@@ -6,7 +6,7 @@ export const PopUp = ({icon, text, type, callback, close, Message, Confirmation 
     <>
     <div className="flex justify-center items-center backdrop-blur-sm overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
                     <div className="relative p-20 w-auto my-12 mx-auto">
-                        <div className="border-0 h-96 justify-around rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                        <div className="border-0 h-96 justify-around rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none vm:w-full">
                             <div className="flex flex-col items-center p-5 border-b border-solid border-gray-300 rounded-t ">
                                 <img src={icon} alt="" />
                                 <h3 className="font-semibold text-[#757D85] text-4xl mt-12">{text}</h3>

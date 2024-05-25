@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import NavLink from "../../components/NavLink";
 import TableData from "../../components/TableData";
 import { useTokenValidation } from "../../hooks/authentication/useTokenValidation";
 import { refreshToken } from "../../hooks/authentication/refreshToken";
 import api from "../../lib/apiConfig";
 import SideBar from "../../components/SideBar";
 import Pagination from "../../components/pagination.jsx";
+import * as XLSX from "xlsx";
+import PopUp from "../../components/PopUp.jsx";
+import tanda_seru from "../../assets/tanda_seru.svg";
 
 const RiwayatDetail = () => {
   const { tokenData, role, exp, userId } = refreshToken();
@@ -18,6 +20,9 @@ const RiwayatDetail = () => {
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 10;
+
+  const [isDownload, setDownload] = useState(false)
+
   const lastPostIndex = currentPage * postsPerPage;
   const firstPostIndex = lastPostIndex - postsPerPage;
   const currentPosts = data.slice(firstPostIndex, lastPostIndex);
@@ -64,6 +69,20 @@ const RiwayatDetail = () => {
     }
   }, [userId]);
 
+  const downloadExcel = () => {
+    try {
+      const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Riwayat Aktivitas");
+    XLSX.writeFile(workbook, `RiwayatAktivitas_${username}.xlsx`);
+
+    setDownload(false)
+    } catch (error) {
+      console.log('unduh riwayat gagal')
+    }
+  };
+
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -74,14 +93,14 @@ const RiwayatDetail = () => {
 
   return (
     <>
-      <div className="flex h-screen">
-        <div className="main w-full p-12">
+      <div className="flex relative h-screen">
+        <div className="main w-full p-12 flex-col vm:p-5">
           <div className="flex items-center justify-between">
             <Link to={"/"}>
-              <h3 className="font-bold text-base">EGG VISION</h3>
+              <h3 className="font-bold text-2xl">EGG VISION</h3>
             </Link>
 
-            <form className="">
+            <form className="vm:hidden">
               <label
                 htmlFor="default-search"
                 className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
@@ -109,33 +128,42 @@ const RiwayatDetail = () => {
                 <input
                   type="search"
                   id="default-search"
-                  className="bg-[#A3A3A3] text-[#DCDCDC] block w-full p-4 ps-10 text-sm border border-gray-300 rounded-lg focus:ring-blue-500"
+                  className="bg-[#A3A3A3] text-[#DCDCDC] block w-full p-4 ps-10 text-sm border border-gray-300 rounded-lg focus:ring-blue-500 "
                   placeholder="Search"
                   required
                 />
               </div>
             </form>
           </div>
-
           <div className="flex mt-5 justify-center items-center flex-col">
             <TableData
               unduh={true}
               columns={columns}
               data={currentPosts}
               title="Riwayat Aktivitas"
+              fncUnduh={() => {setDownload(true)}}
             />
-          <Pagination
-            totalPosts={data.length}
-            postsPerPage={postsPerPage}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-          />
+            <Pagination
+              totalPosts={data.length}
+              postsPerPage={postsPerPage}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
           </div>
         </div>
-        <div className="side w-1/4">
+
+        <div className="side basis-1/4 vm:absolute vm:right-5 top-2">
           <SideBar />
         </div>
       </div>
+      {isDownload &&
+      <PopUp
+      icon={tanda_seru}
+      Confirmation={true}
+      callback={downloadExcel}
+      close={() => setDownload(false)}
+      text="Yakin Unduh Data Riwayat?"
+    />}
     </>
   );
 };

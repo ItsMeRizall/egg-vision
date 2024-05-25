@@ -21,7 +21,7 @@ export function calibration(){
             }
         }
 
-        const updateCalibration = async (id,data) => {
+        const updateCalibration = async (id,data, setError) => {
             try {
                 const res = await api.patch(`calibration/${id}`,data)
                 console.log("Update Success ", res.data)
