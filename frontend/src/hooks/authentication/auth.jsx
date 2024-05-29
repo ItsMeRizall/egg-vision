@@ -9,6 +9,10 @@ export function auth() {
     const [authError, setAuthError] = useState(false)
 
     const loginUser = async (login, callback) => {
+        if (login.username === "" || login.password === ""){
+            callback("Form Harus Diisi Secara Lengkap")
+            return;
+        }
         try {
             const response = await api.post('login', login);
             console.log(response)

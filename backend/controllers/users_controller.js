@@ -54,6 +54,21 @@ export const addUser = async (req, res)=>{
 export const editUser = async (req, res) => {
     const { username, status, role, password } = req.body;
     try {
+        // Cek apakah username sudah ada di database, kecuali untuk user yang sedang diupdate
+        const existingUser = await prisma.users.findFirst({
+            where: {
+                username: username,
+                NOT: {
+                    id_user: parseInt(req.params.id)
+                }
+            }
+        });
+
+        if (existingUser) {
+            return res.status(400).json({ msg: "Username sudah digunakan" });
+        }
+
+        // Update data user
         let updateData = {
             username: username,
             status: status,
@@ -77,7 +92,7 @@ export const editUser = async (req, res) => {
     } catch (error) {
         res.status(500).json({ msg: error.message });
     }
-}
+};
 
 
 export const deleteUsers = async (req, res) => {

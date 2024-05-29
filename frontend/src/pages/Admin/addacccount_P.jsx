@@ -1,15 +1,24 @@
-import React, { useState, useEffect } from "react";
-import axios, { formToJSON } from "axios";
+import React, { useState } from "react";
+import axios from "axios";
+import { z } from "zod";
 import PopUp from "../../components/PopUp";
 
-const AddAccountP = ({props, setNotif, setMessages, setSuccess}) => {
+
+const AddAccountP = ({props, setNotif, setMessages, setSuccess, onAddUser}) => {
   const [isShow, setShow] = useState(false);
-  const [data, setData] = useState([]);
   const [formData, setFormData] = useState({
     username: "",
     password: "",
     role: "",
     status: "",
+  });
+  const [errors, setErrors] = useState({});
+  
+  const FormSchema = z.object({
+    username: z.string().min(1, "Username tidak boleh kosong").regex(/^\S*$/, "Username tidak boleh ada spasi"),
+    password: z.string().min(1, "Password tidak boleh kosong").regex(/^[^\s]*$/, "Password tidak boleh ada karakter khusus dan spasi"),
+    status: z.string().min(1, "Status wajib diisi"),
+    role: z.string().min(1, "Role wajib diisi"),
   });
 
   const handleChange = (event) => {
@@ -19,12 +28,34 @@ const AddAccountP = ({props, setNotif, setMessages, setSuccess}) => {
     });
   };
 
+  const validateForm = () => {
+    try {
+      FormSchema.parse(formData);
+      setErrors({});
+      return true;
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const newErrors = error.errors.reduce((acc, curr) => {
+          acc[curr.path[0]] = curr.message;
+          return acc;
+        }, {});
+        setErrors(newErrors);
+      }
+      return false;
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(JSON.stringify(formData, null, 2));
+    if (!validateForm()) {
+      setNotif(true);
+      setSuccess(false);
+      setMessages("Please fix the errors in the form");
+      return;
+    }
     try {
       const response = await axios.post(
-        "http://localhost:3000/users",
+        "http://localhost:3000/addusers",
         formData
       );
       console.log("Data berhasil ditambahkan:", response.data);
@@ -34,15 +65,17 @@ const AddAccountP = ({props, setNotif, setMessages, setSuccess}) => {
         role: "",
         status: "",
       });
-      
-      setShow(false)
-      setTimeout(function() {
-      }, 2000);
-      setNotif(true)
-      setSuccess(true)
-      setMessages("Berhasil Menambahkan Data")
+      setShow(false);
+      setTimeout(function() {}, 2000);
+      setNotif(true);
+      setSuccess(true);
+      setMessages("Berhasil Menambahkan Data");
+      onAddUser(response.data)
     } catch (error) {
       console.error("Gagal menambahkan data:", error);
+      setNotif(true);
+      setSuccess(false);
+      setMessages("Gagal menambahkan data");
     }
   };
 
@@ -66,7 +99,7 @@ const AddAccountP = ({props, setNotif, setMessages, setSuccess}) => {
                 <h3 className="text-xl font-bold text-white">Tambah Data</h3>
               </div>
               <div className="relative flex-auto gap-4">
-                <form className="px-8 pt-6 pb-8 w-full" action="">
+                <form className="px-8 pt-6 pb-8 w-full" onSubmit={handleSubmit}>
                   <div className={"flex flex-col"}>
                     <label className="block text-white text-md font-medium mb-1">
                       Username
@@ -80,6 +113,9 @@ const AddAccountP = ({props, setNotif, setMessages, setSuccess}) => {
                       onChange={handleChange}
                       className="text-black shadow-md px-3 py-3 rounded-md"
                     />
+                    {errors.username && (
+                      <p className="text-white text-xs italic">{errors.username}</p>
+                    )}
                   </div>
                   <div className={"flex flex-col mt-4"}>
                     <label className="block text-white text-md font-medium mb-1">
@@ -93,6 +129,9 @@ const AddAccountP = ({props, setNotif, setMessages, setSuccess}) => {
                       placeholder="New Password"
                       className="text-black shadow-md px-3 py-3 rounded-md"
                     />
+                    {errors.password && (
+                      <p className="text-white text-xs italic">{errors.password}</p>
+                    )}
                   </div>
                   <div className="mb-5 mt-5">
                     <label
@@ -103,11 +142,10 @@ const AddAccountP = ({props, setNotif, setMessages, setSuccess}) => {
                     </label>
                     <select
                       id="status"
-                      required
                       name="status"
                       value={formData.status}
                       onChange={handleChange}
-                      className="mb-5 bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      className=" bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     >
                       <option disabled value="">
                         Status
@@ -115,21 +153,23 @@ const AddAccountP = ({props, setNotif, setMessages, setSuccess}) => {
                       <option value="aktif">Aktif</option>
                       <option value="tidak aktif">Tidak Aktif</option>
                     </select>
+                    {errors.status && (
+                      <p className="text-white text-xs italic">{errors.status}</p>
+                    )}
                   </div>
                   <div className="mb-5 mt-5">
                     <label
-                      htmlFor="status"
+                      htmlFor="role"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
                       Role
                     </label>
                     <select
                       id="role"
-                      required
                       name="role"
                       value={formData.role}
                       onChange={handleChange}
-                      className="mb-5 bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      className=" bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     >
                       <option disabled value="">
                         Role
@@ -137,6 +177,9 @@ const AddAccountP = ({props, setNotif, setMessages, setSuccess}) => {
                       <option value="admin">Admin</option>
                       <option value="pegawai">Pegawai</option>
                     </select>
+                    {errors.role && (
+                      <p className="text-white text-xs italic">{errors.role}</p>
+                    )}
                   </div>
                 </form>
               </div>
@@ -144,7 +187,15 @@ const AddAccountP = ({props, setNotif, setMessages, setSuccess}) => {
                 <button
                   className="text-white w-full bg-[#3E0000] active:bg-[#610000da] font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
                   type="button"
-                  onClick={() => setShow(false)}
+                  onClick={() => {
+                    setShow(false);
+                    setFormData({
+                      username: "",
+                      password: "",
+                      role: "",
+                      status: "",
+                    });
+                  }}
                 >
                   Batal
                 </button>

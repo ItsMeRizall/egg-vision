@@ -10,6 +10,9 @@ import {refreshToken} from "../../hooks/authentication/refreshToken.js";
 import {useTokenValidation} from "../../hooks/authentication/useTokenValidation.js";
 import api from "../../lib/apiConfig.js"
 import { calibration } from "../../hooks/calibration/Calibration.js";
+import PopUp from "../../components/PopUp";
+import gagal from "../../assets/gagal.svg";
+import centang from "../../assets/centang.svg";
 
 export default function Analytic() {
   const {tokenData, username, userId,  exp, role} = refreshToken()
@@ -22,6 +25,10 @@ export default function Analytic() {
   const {getCalibration} = calibration()
   const [scaleWidth, setScaleWidth] = useState();
   const [scaleLength, setScaleLength] = useState();
+
+  const [notif, setNotif] = useState(false);
+  const [notifMessages, setnotifMessages] = useState();
+  const [succes, setSuccess] = useState(false);
 
   useEffect(() => {
     const getScale = async () => {
@@ -82,7 +89,9 @@ export default function Analytic() {
       console.error('Error:', error);
     }
   } else {
-    alert("Silakan ambil gambar dulu.");
+    setNotif(true);
+    setSuccess(false);
+    setnotifMessages("Silakan ambil gambar dulu.");
   }
 };
 
@@ -129,6 +138,15 @@ export default function Analytic() {
           </div>
         </div>
       </div>
+      {notif && (
+        <PopUp
+          icon={succes ? centang : gagal}
+          text={succes ? "Berhasil" : "Ups"}
+          Message={notifMessages}
+          Confirmation={false}
+          close={() => setNotif(false)}
+        />
+      )}
     </>
   );
 }

@@ -7,10 +7,13 @@ import { useTokenValidation } from "../hooks/authentication/useTokenValidation";
 import { logout } from "../hooks/authentication/logout.js";
 import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
 import clsx from 'clsx';
+import PopUp from "./PopUp.jsx";
+import tanda_seru from "../assets/tanda_seru.svg"
 
 export default function Navbar({ users }) {
   const { out } = logout();
   const { tokenData, exp } = refreshToken();
+  const [showNotif, setShowNotif] = useState(false)
   useTokenValidation(tokenData, exp);
   const [isOpen, setIsOpen] = useState(false);
   const toggleMenu = () => {
@@ -40,7 +43,7 @@ export default function Navbar({ users }) {
             <img className="w-10" src={Person} alt="icon" />
           </div>
           <button
-            onClick={out}
+            onClick={() => setShowNotif(true)}
             className="px-9 py-2 border-[#3E0000] border-2 rounded-xl hover:text-white hover:bg-[#3E0000]"
           >
             Logout
@@ -60,11 +63,15 @@ export default function Navbar({ users }) {
       <NavLink children={'Riwayat'} href={'/user-riwayat'} />
       <NavLink children={"Kalibrasi"} href={"/kalibrasi"} />
       <div className="flex items-center font-medium gap-4 flex-col">
-        <button onClick={out} className="border-[#3E0000] border-2 rounded-xl hover:text-white hover:bg-[#3E0000]">
+        <button onClick={() => {(setShowNotif(true))}} className="border-[#3E0000] border-2 rounded-xl hover:text-white hover:bg-[#3E0000]">
           Logout
         </button>
       </div>
     </div>
+    {
+      showNotif &&
+      <PopUp logout={true} icon={tanda_seru} Confirmation={true} text={"Apakah Anda Yakin Ingin Keluar?"} close={() => {setShowNotif(false)}} callback={out}/>
+    }
     </>
   );
 }

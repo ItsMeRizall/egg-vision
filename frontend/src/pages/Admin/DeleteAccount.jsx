@@ -18,6 +18,7 @@ const DeleteAccount = (props) => {
         props.setNotif(true)
         props.setSuccess(true)
         props.setMessages("Data Anda Berhasil Di Hapus")
+        props.ondDelete()
       } else if (response.status == 204){
         setShow(false)
         props.setNotif(true)

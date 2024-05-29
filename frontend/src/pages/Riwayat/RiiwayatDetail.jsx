@@ -163,6 +163,7 @@ const RiwayatDetail = () => {
       callback={downloadExcel}
       close={() => setDownload(false)}
       text="Yakin Unduh Data Riwayat?"
+      unduh={true}
     />}
     </>
   );
