@@ -52,6 +52,7 @@ export const getCountActivityUsers = async (req, res) => {
   try {
     const usersHistoryWithCount = await prisma.users.findMany({
       select: {
+        id_user: true,
         username: true,
         _count: {
           select: {
@@ -176,4 +177,18 @@ export const totalGradeInWeek = async (req, res) => {
   }
 
   res.status(200).json(weekData);
+}
+
+export const deleteDataActivity = async (req, res) => {
+  try {
+    const response = await prisma.activity.deleteMany({
+      where: {
+        user_id: Number(req.params.id)
+      }
+    })
+    return res.status(200).json(response)
+  } catch (error) {
+    return rs.status(400).json(error)
+    
+  }
 }

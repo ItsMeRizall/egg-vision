@@ -28,10 +28,12 @@ const RiwayatAdmin = () => {
           No: index + 1,
           Username: row.username,
           Total: activityCount,
+          userId: row.id_user
         };
       });      
       
       setData(transformedData);
+      console.log(data)
     } catch (error) {
       console.log('Error fetching data:', error);
     }
@@ -97,6 +99,7 @@ const RiwayatAdmin = () => {
               data={data}
               title="Riwayat Aktivitas"
               detail={true}
+              onDelete={fetchData}
             />
           <Pagination
                 totalPosts={data.length}

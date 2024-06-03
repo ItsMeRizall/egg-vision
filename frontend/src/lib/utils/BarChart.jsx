@@ -81,7 +81,7 @@ const BarChart = ({activity}) => {
       },
       title: {
         display: true,
-        text: "Monthly Sales Data",
+        text: "Data Telur Dalam Minggu",
       },
     },
   };

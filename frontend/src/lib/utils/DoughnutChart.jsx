@@ -27,7 +27,7 @@ const DoughnutChart = ({ totalFertile, totalNonFertile }) => {
       },
       title: {
         display: true,
-        text: "Doughnut Chart Example",
+        text: "Total Telur",
       },
     },
   };

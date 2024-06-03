@@ -162,6 +162,7 @@ const Admin = () => {
                                 setNotif={setNotif}
                                 setMessages={setNotifMessages}
                                 setSuccess={setSuccess}
+                                onUpdate={fetchData}
                               />
                             </td>
                             <td className="">
@@ -170,6 +171,7 @@ const Admin = () => {
                                 setNotif={setNotif}
                                 setMessages={setNotifMessages}
                                 setSuccess={setSuccess}
+                                onDelete={fetchData}
                               />
                             </td>
                           </tr>

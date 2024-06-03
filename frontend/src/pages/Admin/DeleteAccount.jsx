@@ -7,6 +7,7 @@ import {PopUp} from "../../components/PopUp";
 
 const DeleteAccount = (props) => {
   const [isShow, setShow] = useState(false);
+  const {onDelete} = props
 
   const handleDelete = async () => {
     try {
@@ -18,7 +19,7 @@ const DeleteAccount = (props) => {
         props.setNotif(true)
         props.setSuccess(true)
         props.setMessages("Data Anda Berhasil Di Hapus")
-        props.ondDelete()
+        onDelete()
       } else if (response.status == 204){
         setShow(false)
         props.setNotif(true)

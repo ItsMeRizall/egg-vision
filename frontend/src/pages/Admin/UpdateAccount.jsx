@@ -10,15 +10,16 @@ const UpdateAccount = (props) => {
   });
   const [updatedData, setUpdatedData] = useState(originalData);
   const [errorMessage, setErrorMessage] = useState()
-
+  const {onUpdate} = props
   const { putData } = dataAcccount();
 
-  const handleUpdate = () => {
-    putData(updatedData, props.id);
+  const handleUpdate = async () => {
+    await putData(updatedData, props.id);
     setShow(false);
     props.setNotif(true);
     props.setSuccess(true);
     props.setMessages("Berhasil Memperbarui Data");
+    onUpdate()
   };
 
   const handleChange = (event) => {

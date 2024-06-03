@@ -6,7 +6,7 @@ export function logout(){
     const out = async () => {
         try {
             await api.delete('logout');
-            navigate('/login')
+            navigate('/')
         }
         catch (e){
             console.log(e)
